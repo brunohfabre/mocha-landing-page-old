@@ -20,6 +20,7 @@ export function GithubCallback() {
 
       console.log(response.data)
       window.open('mocha://teste')
+      window.close()
     }
 
     loadGithubInfo()
