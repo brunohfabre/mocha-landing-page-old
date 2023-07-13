@@ -1,36 +1,36 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import axios from 'axios'
 
 export function GithubCallback() {
+  const firstRender = useRef(true)
+
   const [search] = useSearchParams()
 
   useEffect(() => {
     async function loadGithubInfo(): Promise<void> {
       const code = search.get('code')
 
-      const accessTokenResponse = await axios.post(
-        'https://github.com/login/oauth/access_token',
-        null,
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/oauth/github`,
         {
-          params: {
-            code,
-            client_id: import.meta.env.VITE_GITHUB_CLIENT_ID,
-            client_secret: import.meta.env.VITE_GITHUB_CLIENT_SECRET,
-          },
+          code,
         },
       )
 
-      // const userDataResponse = await axios.get('https://api.github.com/user', )
+      console.log(response.data)
+      window.open('mocha-dev://teste')
+    }
 
-      console.log(accessTokenResponse)
+    if (firstRender.current) {
+      firstRender.current = false
+
+      return
     }
 
     loadGithubInfo()
   }, [search])
-
-  console.log(search.get('code'))
 
   return <div>github</div>
 }
