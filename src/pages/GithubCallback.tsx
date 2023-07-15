@@ -9,7 +9,6 @@ export function GithubCallback() {
   useEffect(() => {
     async function loadGithubInfo(): Promise<void> {
       const code = search.get('code')
-      console.log(code)
 
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/oauth/github`,
@@ -18,8 +17,7 @@ export function GithubCallback() {
         },
       )
 
-      console.log(response.data)
-      window.open('mocha://teste')
+      window.open(`mocha://oauth?token=${response.data.token}`)
       window.close()
     }
 
